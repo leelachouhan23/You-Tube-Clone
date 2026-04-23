@@ -1,3 +1,5 @@
-//nodemone
+// //nodemone
 
- npm i -D nodemon
+//  npm i -D nodemon
+
+//  npm install mongoose express dotenv
