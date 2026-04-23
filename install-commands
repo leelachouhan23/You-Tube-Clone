@@ -7,3 +7,5 @@
 //npm install mongoose-aggregate-paginate-v2
 //npm i bcrypt
 //npm install jsonwebtoken
+//npm install multer
+//npm i cloudinary
