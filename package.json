@@ -1,0 +1,24 @@
+{
+  "name": "you-tube-clone",
+  "version": "1.0.0",
+  "description": "a backend for youtube colone",
+  "keywords": [
+    "javascript",
+    "backend"
+  ],
+  "homepage": "https://github.com/leelachouhan23/You-Tube-Clone#readme",
+  "bugs": {
+    "url": "https://github.com/leelachouhan23/You-Tube-Clone/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leelachouhan23/You-Tube-Clone.git"
+  },
+  "license": "ISC",
+  "author": "Leela Chouhan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
