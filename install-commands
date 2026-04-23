@@ -3,3 +3,7 @@
 //  npm i -D nodemon
 
 //  npm install mongoose express dotenv
+//npm i cookie-parser cors
+//npm install mongoose-aggregate-paginate-v2
+//npm i bcrypt
+//npm install jsonwebtoken
