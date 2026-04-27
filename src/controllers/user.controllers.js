@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { use } from "react"
+import { response } from "express"
 
 // helper function (bahar hona chahiye)
 const generateAccessAndRefreshToken = async(userId) =>{
@@ -241,7 +242,12 @@ const changeCurrentPassword = asyncHandler(async(ReadableByteStreamController,re
 const getCurrentUser = asyncHandler(async(req, res) =>{
             return res
             .status(200)
-            .json(200, req.user, "current user fetched successfully")
+            .json(new ApiResponse
+                (200, 
+                 req.user, 
+                 "current user fetched successfully"
+
+            ))
         })
 
 const updateAccountDetails = asyncHandler(async(req,res) =>{
@@ -328,6 +334,80 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
         new ApiError(200, user, "Cover image updated successfully")
     )
 
+
+
+})
+
+const getUserChannelProfile = asyncHandler(async(req,res) =>{
+    const {username} = req.params
+    if(!username?.trim()){
+        throw new ApiError(400, "username is missing")
+    }
+    //aagrigation pipline
+    const channel = await User.aggregate([
+        {
+        $match:{
+            username:username?.toLowerCase()
+        },
+    },
+      {
+        $lookup:{
+            from:"subsctiption",
+            localField:"_id",
+            foreignField:"channerl",
+            as:"subscribers"
+        }
+      },
+      {
+        $lookup:{
+            from:"subsctiption",
+            localField:"_id",
+            foreignField:" subscriber",
+            as:"subscribedTo"
+        }
+      },
+      {
+        $addFields:{
+            subscribersCount:{
+                $size:"$subscribers"
+            },
+            channelsSubscribedToCount:{
+                $size:"$subscribedTo"
+            },
+            isSubscribed:{
+                $cond:{
+                    //$in means present or not
+                    if:{$in: [req.user?._id, "$subscribers.subscriber"]},
+                    then:true,
+                    else:false
+                }
+            }
+        }
+      },
+      {
+        $project:{
+            fullName:1,
+            username:1,
+            subscribersCount:1,
+            channelsSubscribedToCount:1,
+            isSubscribed:1,
+            avatar:1,
+            coverImage:1,
+            email:1,
+
+        }
+      }
+    ])
+
+    if(!channel?.length){
+        throw new ApiError(400, "channel does not exists")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, channel[0], "User Channel fatched successfully")
+    )
 
 
 })
