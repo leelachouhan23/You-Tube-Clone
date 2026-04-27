@@ -4,7 +4,7 @@ import { User } from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
-import { use } from "react"
+
 import { response } from "express"
 import mongoose from "mongoose"
 
@@ -172,14 +172,12 @@ const logoutUser = asyncHandler(async(req, res) => {
       .json(new ApiResponse(200, {}, "User Logged Out"))
 })
 
-const refreshAccessToken = asyncHandler(async(req,res)
-=> {
-    const incomingRefreshToken = req.cookies.
-    refreshToken || req.body.refreshToken
+const refreshAccessToken = asyncHandler(async(req,res)=> {
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
 
     if(!incomingRefreshToken){
-        throw new ApiError(401,"unothorized request")
+        throw new ApiError(401,"unauthorized request")
     }
     try {
         const decodedToken = jwt.verify(
@@ -219,8 +217,7 @@ const refreshAccessToken = asyncHandler(async(req,res)
     }
 })
 
-const changeCurrentPassword = asyncHandler(async(ReadableByteStreamController,res)
-    =>{
+const changeCurrentPassword = asyncHandler(async(ReadableByteStreamController,res)=>{
         const {oldPassword, newPassword} = req.body
 
         const user = await User.findById(req,user?._id)
